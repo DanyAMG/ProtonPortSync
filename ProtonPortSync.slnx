@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ProtonPortSync.Application/ProtonPortSync.Application.csproj" />
+  <Project Path="ProtonPortSync.Domain/ProtonPortSync.Domain.csproj" />
+  <Project Path="ProtonPortSync.Infrastructure/ProtonPortSync.Infrastructure.csproj" />
+  <Project Path="ProtonPortSync.Tests/ProtonPortSync.Tests.csproj" />
+  <Project Path="ProtonPortSync.Worker/ProtonPortSync.Worker.csproj" />
+</Solution>
