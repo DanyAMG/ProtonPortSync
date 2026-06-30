@@ -7,6 +7,6 @@ namespace ProtonPortSync.Application.Abstractions
     public interface IQbittorrentPortService
     {
         Task<int> GetCurrentPortAsync(CancellationToken cancellationToken);
-        Task UpdatePortAsync(int port, CancellationToken cancellationToken);
+        Task UpdatePortAsync(int? port, CancellationToken cancellationToken);
     }
 }

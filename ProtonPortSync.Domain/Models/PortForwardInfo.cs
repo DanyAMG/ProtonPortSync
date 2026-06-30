@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProtonPortSync.Domain.Models
 {
-    public sealed record PortForwardInfo(int Port, DateTimeOffset DetectedAt)
+    public sealed record PortForwardInfo(int? Port, DateTimeOffset DetectedAt)
     {
     }
 }

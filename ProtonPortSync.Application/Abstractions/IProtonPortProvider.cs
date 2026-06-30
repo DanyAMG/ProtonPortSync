@@ -7,6 +7,6 @@ namespace ProtonPortSync.Application.Abstractions
 {
     public interface IProtonPortProvider
     {
-        Task<PortForwardInfo> GetCurrentPortAsync(CancellationToken cancellationToken);
+        Task<PortForwardInfo?> GetCurrentPortAsync(CancellationToken cancellationToken);
     }
 }

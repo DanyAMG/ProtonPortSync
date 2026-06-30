@@ -8,10 +8,14 @@ namespace ProtonPortSync.Tests
     {
         private sealed class FakeProtonPortProvider : IProtonPortProvider
         {
-            public int CurrentPort { get; set; } = 12345;
-            Task<PortForwardInfo> IProtonPortProvider.GetCurrentPortAsync(CancellationToken cancellationToken)
+            public int? CurrentPort { get; set; } = 12345;
+            Task<PortForwardInfo?> IProtonPortProvider.GetCurrentPortAsync(CancellationToken cancellationToken)
             {
-                return Task.FromResult(new PortForwardInfo(CurrentPort, DateTimeOffset.UtcNow));
+                if(CurrentPort == null)
+                {
+                    return Task.FromResult<PortForwardInfo?>(null);
+                }
+                return Task.FromResult<PortForwardInfo?>(new PortForwardInfo(CurrentPort, DateTimeOffset.UtcNow));
             }
         }
 
@@ -22,9 +26,9 @@ namespace ProtonPortSync.Tests
             {
                 return Task.FromResult(CurrentPort);
             }
-            Task IQbittorrentPortService.UpdatePortAsync(int newPort, CancellationToken cancellationToken)
+            Task IQbittorrentPortService.UpdatePortAsync(int? newPort, CancellationToken cancellationToken)
             {
-                CurrentPort = newPort;
+                CurrentPort = newPort ?? 0;
                 return Task.CompletedTask;
             }
         }
@@ -75,6 +79,33 @@ namespace ProtonPortSync.Tests
             Assert.True(result.IsSynchronized, "Ports are not synchronized");
             Assert.Equal(12345, result.QbittorrentPortBefore);
             Assert.Equal(12345, result.QbittorrentPortAfter);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_WhenNoProtonIsDetected_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var protonPortProvider = new FakeProtonPortProvider
+            {
+                CurrentPort = null
+            };
+
+
+            var qBittorrentPortService = new FakeQbittorrentPortService
+            {
+                CurrentPort = 12345
+            };
+
+            //Act
+
+            var result = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            {
+                var synchronizePortsUseCase = new SynchronizePortsUseCase(protonPortProvider, qBittorrentPortService);
+                await synchronizePortsUseCase.ExecuteAsync(CancellationToken.None);
+            });
+
+            //Assert
+            Assert.StartsWith("No Proton port was detected.",result.Message);
         }
     }
 }
