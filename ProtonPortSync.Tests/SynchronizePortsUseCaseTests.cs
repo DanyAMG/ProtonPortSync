@@ -11,11 +11,11 @@ namespace ProtonPortSync.Tests
             public int? CurrentPort { get; set; } = 12345;
             Task<PortForwardInfo?> IProtonPortProvider.GetCurrentPortAsync(CancellationToken cancellationToken)
             {
-                if(CurrentPort == null)
+                if(CurrentPort is null)
                 {
                     return Task.FromResult<PortForwardInfo?>(null);
                 }
-                return Task.FromResult<PortForwardInfo?>(new PortForwardInfo(CurrentPort, DateTimeOffset.UtcNow));
+                return Task.FromResult<PortForwardInfo?>(new PortForwardInfo(CurrentPort.Value, DateTimeOffset.UtcNow));
             }
         }
 
@@ -26,9 +26,9 @@ namespace ProtonPortSync.Tests
             {
                 return Task.FromResult(CurrentPort);
             }
-            Task IQbittorrentPortService.UpdatePortAsync(int? newPort, CancellationToken cancellationToken)
+            Task IQbittorrentPortService.UpdatePortAsync(int newPort, CancellationToken cancellationToken)
             {
-                CurrentPort = newPort ?? 0;
+                CurrentPort = newPort;
                 return Task.CompletedTask;
             }
         }

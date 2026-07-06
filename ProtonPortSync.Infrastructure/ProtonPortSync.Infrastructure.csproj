@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Windows\" />
-    <Folder Include="Qbittorrent\" />
-    <Folder Include="Proton\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ProtonPortSync.Application\ProtonPortSync.Application.csproj" />
     <ProjectReference Include="..\ProtonPortSync.Domain\ProtonPortSync.Domain.csproj" />
   </ItemGroup>
